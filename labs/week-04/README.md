@@ -135,6 +135,14 @@ Add log statements to the following locations in the codebase:
 | Access to a resource without authorization | WARNING | Any route that checks the role cookie |
 | Unhandled exception | ERROR | Global error handler (already done in Step 3) |
 
+`current_app` is the Flask object that exposes the logger inside a route. Make sure it is included in the import at the top of `auth.py`:
+
+```python
+from flask import Blueprint, current_app, request, redirect, url_for, render_template, make_response
+```
+
+If `current_app` is missing from the import, login will throw a `NameError` and return a 500 error on every POST.
+
 ---
 
 ### 6. Verify Log Output

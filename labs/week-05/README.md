@@ -137,16 +137,36 @@ import secrets
 app.secret_key = secrets.token_hex(32)
 ```
 
-In `auth.py`, replace `response.set_cookie(...)` with `session[...]` assignments:
+In `auth.py`, replace `response.set_cookie(...)` with `session[...]` assignments on login, and replace the three `resp.delete_cookie(...)` calls in the logout route with `session.clear()`:
 
 ```python
 from flask import session
+
+# login route — after verifying credentials:
 session['authenticated'] = username
 session['role'] = user['role']
 session['user_id'] = user['user_id']
+return redirect(url_for('home'))
+
+# logout route:
+session.clear()
+return redirect(url_for('auth.login'))
 ```
 
-Update all routes that read from `request.cookies.get(...)` to read from `session.get(...)` instead. Rebuild and verify the session cookie is now opaque.
+Update all routes that read from `request.cookies.get(...)` to read from `session.get(...)` instead. Every route file (`grades.py`, `enrollment.py`, `messages.py`, `documents.py`, `admin.py`, `chatbot.py`) and the home route in `__init__.py` must be updated — if any file still reads from cookies, those pages will redirect to login since the identity is no longer stored in cookies.
+
+Also update `templates/base.html`. The navbar reads the session directly in Jinja to decide what links to show:
+
+```html
+{% if session.get('authenticated') %}
+  Welcome, {{ session.get('authenticated') }} ({{ session.get('role', 'student') }})
+  ...
+  {% if session.get('role') in ['admin'] %}
+```
+
+Flask's `session` object is available in all Jinja templates automatically — no extra wiring needed. If you skip this step the navbar will be blank even though the routes themselves work.
+
+Rebuild and verify the session cookie is now opaque.
 
 ---
 
