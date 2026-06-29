@@ -315,14 +315,25 @@ sudo python3 labs/week-02/scripts/arpspoof.py 172.20.10.1 172.20.10.5 en0
 **Why the session cookie is the target and what it grants the attacker:**
 HTTP is a stateless protocol — the server has no built-in memory of who you are between requests. Session cookies solve this by storing a token that identifies your authenticated session. When the victim's browser sends any request to HuskyHub, it attaches this cookie automatically. Because you are now a man-in-the-middle receiving all their traffic, Wireshark can read the cookie value from the unencrypted HTTP stream. The Wireshark filter `ip.addr == <victim-ip> && http.cookie` narrows the capture to HTTP requests from the victim device's IP that contain cookie headers. Once you have the cookie value, you do not need the victim's password — you can impersonate their authenticated session directly.
 
-While both `arpspoof.py` processes are running, start a Wireshark capture on the **attacker machine** filtered to the victim device's IP:
-```
-ip.addr == <victim-ip> && http.cookie
-```
+While both `arpspoof.py` processes are running, open Wireshark on the **attacker machine**:
+
+1. On the Wireshark start screen, select your **Wi-Fi network interface** — this is where the victim's traffic arrives:
+   - **macOS:** `en0` (or `en1` if en0 shows no traffic)
+   - **Linux:** `wlan0` or `eth0` depending on your connection type
+   - **Windows:** `Wi-Fi` or `Ethernet` (whichever you used to connect to the shared network)
+
+   > Do **not** select the loopback interface here — unlike the verification exercise earlier, you are capturing traffic arriving over the network, not traffic from your own machine.
+
+2. Click the blue shark fin button to start the capture.
+
+3. In the filter bar at the top, type the following and press Enter:
+   ```
+   ip.addr == <victim-ip> && http.cookie
+   ```
 
 **On the victim device:** navigate to `http://<attacker-ip>:80` and click between pages in HuskyHub (Home, Grades, etc.). Each page load sends an HTTP request with the session cookie attached.
 
-On the attacker machine, watch the Wireshark capture for requests from the victim's IP. Locate the session cookie in the **Cookie** field of any captured request. Record the full value.
+On the attacker machine, packets from the victim's IP will appear in the capture list. Click one, expand **Hypertext Transfer Protocol** in the packet detail pane, and look for the **Cookie** field. Record the full cookie value.
 
 ---
 
