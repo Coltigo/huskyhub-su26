@@ -178,7 +178,7 @@ This exercise requires a second device acting as the **victim device**. Any devi
 **On the attacker machine only:** ensure HuskyHub is running (`docker compose up` in the `huskyhub-su26` directory) before the victim device tries to connect. The victim device does not need Docker or any special software — only a browser.
 
 **On the victim device:**
-Open a browser and navigate to `http://<attacker-ip>:80` (the attacker machine's IP on the shared network — not localhost). Log in using the `alee` account (`password: alexpass`). Leave this session active.
+Open a browser and navigate to `http://<attacker-ip>:80` (the attacker machine's IP on the shared network — not localhost). Leave this session active and the victim device on.
 
 Connect both devices to the same isolated network (personal mobile hotspot or home router where you are the only user).
 
