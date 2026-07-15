@@ -200,7 +200,7 @@ Select the highest-severity CVE from your audit. Look it up at [nvd.nist.gov](ht
 
 **Q2.** Paste one JSON log entry for each of your four log event types. Explain why each field in the structured format is useful for incident response.
 
-**Q3.** The Thursday lecture covered third-party risk. What is a software supply chain attack? How does the SolarWinds breach illustrate that dependency risk extends beyond known CVEs in publicly listed packages?
+**Q3.** The Wednesday lecture covered third-party risk. What is a software supply chain attack? How does the SolarWinds breach illustrate that dependency risk extends beyond known CVEs in publicly listed packages?
 
 ---
 
