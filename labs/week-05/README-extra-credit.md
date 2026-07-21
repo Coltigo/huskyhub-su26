@@ -359,28 +359,19 @@ docker exec -it huskyhub-su26-huskyhub-flask-1 cat /var/log/huskyhub/app.log
 
 ## Write-Up Questions
 
-**Q1.** Paste your brute force script with comments. How many requests per second
-did it achieve? Calculate: at this rate, how long would it take to try every
-possible 6-character lowercase alphabetic password (26^6 combinations)?
-
-**Q2.** In Step 4 you promoted the "attack in progress" signal from a WARNING to a
-single CRITICAL event, rather than just logging more WARNINGs. Why is one distinct
-high-severity event more useful to a security analyst than a hundred WARNING
-lines? What does the analyst do differently in response to each?
-
-**Q3.** The `successful_login_after_failures` event (Step 4e) is a WARNING, while
+**Q1.** The `successful_login_after_failures` event (Step 4e) is a WARNING, while
 `brute_force_detected` (Step 4d) is a CRITICAL. Justify that difference. What is
 the analyst *certain* of in the CRITICAL case that they are only *suspicious* of
 in the WARNING case?
 
-**Q4.** Your account lockout triggers after 5 failed attempts **on a single
+**Q2.** Your account lockout triggers after 5 failed attempts **on a single
 account**. Consider an attacker who instead tries one common password (say,
 `Spring2026!`) against 500 different usernames — a technique called *password
 spraying*. Would your per-account lockout detect or stop this attack? Which field
 in your enriched log (Step 4) would let an analyst catch it, and what would they
 look for?
 
-**Q5.** Your lockout returns the same generic error message whether the password
+**Q3.** Your lockout returns the same generic error message whether the password
 is wrong or the account is locked. Why? What specific information would you leak
 to an attacker if the message said "account temporarily locked" instead?
 
